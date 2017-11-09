@@ -38,4 +38,4 @@ Or install it yourself as:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fragment_highlighter-rails.
+Bug reports and pull requests are welcome on GitHub at https://github.com/phlowerteam/fragment_highlighter-rails.
