@@ -17,13 +17,13 @@ class Marker {
       selection = document.selection.createRange();
     }
 
-    if (selection.toString() !== '') {
+    if (selection.toString().length > 2) {
       Marker.saveFragments(selection.toString());
     }
   }
 
   static saveFragments(text){
-    let fragments = text.trim().split("\n\n");
+    let fragments = text.trim().split("\n");
     fragments.forEach( fragment => {
       if (fragment.length > 0) {
         UserSettings.saveFragment(fragment);

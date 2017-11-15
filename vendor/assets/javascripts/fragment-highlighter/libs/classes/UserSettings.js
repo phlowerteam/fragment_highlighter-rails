@@ -25,24 +25,30 @@ class UserSettings {
         articles: {},
         articles_titles: {},
         settings:{
-          hmode_is_on: true
+          hmode_is_on: true,
+          hmode_reading_is_on: false
         }
       };
       LS.saveUSettings(userSettings);
-    } else {
-      let hModeOn = LS.uSettings().settings.hmode_is_on;
-      if(hModeOn){
-        let articleFragments = userSettings.articles[Tools.href()] || [];
-        articleFragments.forEach(fragment => {
-          Marker.highlight(fragment.text);
-        });
-      }
-    };
+    }
+
+    if(UserSettings.isHMode() || UserSettings.isHModeReading()){
+      let articleFragments = userSettings.articles[Tools.href()] || [];
+      articleFragments.forEach(fragment => {
+        Marker.highlight(fragment.text);
+      });
+    }
   }
 
   static isHMode() {
     let mode;
-    try { mode = LS.uSettings().settings.hmode_is_on } catch(e) {};
+    try { mode = (LS.uSettings().settings.hmode_is_on && !LS.uSettings().settings.hmode_reading_is_on) } catch(e) {};
+    return mode;
+  }
+
+  static isHModeReading() {
+    let mode;
+    try { mode = LS.uSettings().settings.hmode_reading_is_on } catch(e) {};
     return mode;
   }
 

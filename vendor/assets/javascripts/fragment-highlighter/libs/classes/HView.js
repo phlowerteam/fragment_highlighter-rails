@@ -1,14 +1,5 @@
 class HView {
 
-  static isHModeOn(allowedPages) {
-    return (UserSettings.isHMode() && HView.isSupportedPage(allowedPages));
-  }
-
-  static isSupportedPage(allowedPages) {
-    let matcher = new RegExp("(" + allowedPages.join('|') + ")", "g");
-    return matcher.test(window.location.href)
-  }
-
   static renderModeButton() {
     // https://www.w3schools.com/howto/howto_css_sidenav_buttons.asp
     $('body').prepend(`
@@ -26,7 +17,7 @@ class HView {
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Highlighted Articles</h4>
+            <h4 class="modal-title" id="myModalLabel">${I18.tr(I18j.highlighted_fragments)}</h4>
           </div>
           <div class="modal-body" id="marked-items-list">
             ...
@@ -34,12 +25,18 @@ class HView {
           <div class="modal-footer">
             <row>
               <div class="col-md-8">
-                <div class="checkbox">
-                  <label><input type="checkbox" id="hmode_checkbox" value="" onclick="HWindowCtrls.turnOnHMode()"> TURN ON Highlighting Mode</label>
-                </div>
+                <label class="radio-inline">
+                  <input id="hmode_off_radio_btn" type="radio" name="optradio" onclick="HWindowCtrls.turnOffHMode()">${I18.tr(I18j.turn_off_hmode)}
+                </label>
+                <label class="radio-inline">
+                  <input id="hmode_on_radio_btn" type="radio" name="optradio" onclick="HWindowCtrls.turnOnHMode()">${I18.tr(I18j.turn_on_hmode)}
+                </label>
+                <label class="radio-inline">
+                  <input id="hmode_reading_radio_btn" type="radio" name="optradio"  onclick="HWindowCtrls.turnOnReadingHMode()">${I18.tr(I18j.turn_on_reading_hmode)}
+                </label>
               </div>
               <div class="col-md-4">
-                <button type="button" class="btn btn-primary" onclick='HWindowCtrls.exportJSON()'>Export Settings</button>
+                <button type="button" class="btn btn-primary" onclick='HWindowCtrls.exportJSON()'>${I18.tr(I18j.export_settings)}</button>
               </div>
             </row>
             <br>
@@ -52,7 +49,7 @@ class HView {
                       <input type="file" id="fileinput" class="custom-file-input" required>
                       <span class="custom-file-control"></span>
                     </label>
-                    <input type='button' class="btn btn-success" id='btnLoad' value='Import Settings' onclick='HWindowCtrls.importJSON();'>
+                    <input type='button' class="btn btn-success" id='btnLoad' value='${I18.tr(I18j.import_settings)}' onclick='HWindowCtrls.importJSON();'>
                   </fieldset>
                 </form>
               </div>

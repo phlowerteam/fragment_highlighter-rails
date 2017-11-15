@@ -4,9 +4,18 @@ class HWindowCtrls {
     $('#marked-items-list').html('');
     let userSettings = LS.uSettings();
     for (let key in userSettings.articles_titles) {
-      $('#marked-items-list').append(`<span><a href='${key}' target='_blank'>${userSettings.articles_titles[key]}</a>&nbsp<a href="#" onclick="HWindowCtrls.deleteFragments('${key}')">[Delete]</a></span><br>`);
+      $('#marked-items-list').append(`<span><a href='${key}' target='_blank'>${userSettings.articles_titles[key]}</a>&nbsp<a href="#" onclick="HWindowCtrls.deleteFragments('${key}')">[${I18.tr(I18j.remove)}]</a></span><br>`);
     };
-    $('input#hmode_checkbox')[0].checked = userSettings.settings.hmode_is_on;
+
+    if (userSettings.settings.hmode_is_on) {
+      $('input#hmode_on_radio_btn')[0].checked = true;
+    } else {
+      if (userSettings.settings.hmode_reading_is_on) {
+        $('input#hmode_reading_radio_btn')[0].checked = true;
+      } else {
+        $('input#hmode_off_radio_btn')[0].checked = true;
+      }
+    }
     $('#highlightModal').modal();
   }
 
@@ -15,7 +24,7 @@ class HWindowCtrls {
     let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userSettings));
     let dlAnchorElem = document.getElementById('downloadAnchorElem');
     dlAnchorElem.setAttribute("href",     dataStr     );
-    dlAnchorElem.setAttribute("download", "scene.json");
+    dlAnchorElem.setAttribute("download", "settings.json");
     dlAnchorElem.click();
   }
 
@@ -23,19 +32,19 @@ class HWindowCtrls {
     let input, file, fr;
 
     if (typeof window.FileReader !== 'function') {
-      alert("The file API isn't supported on this browser yet.");
+      alert(I18.tr(I18j.import.not_supported_api));
       return;
     }
 
     input = document.getElementById('fileinput');
     if (!input) {
-      alert("Um, couldn't find the fileinput element.");
+      alert(I18.tr(I18j.import.not_find));
     }
     else if (!input.files) {
-      alert("This browser doesn't seem to support the `files` property of file inputs.");
+      alert(I18.tr(I18j.import.not_supported_files));
     }
     else if (!input.files[0]) {
-      alert("Please select a file before clicking 'Load'");
+      alert(I18.tr(I18j.import.please_select));
     }
     else {
       file = input.files[0];
@@ -52,7 +61,24 @@ class HWindowCtrls {
 
   static turnOnHMode(){
     let userSettings = LS.uSettings();
-    userSettings.settings.hmode_is_on = $('input#hmode_checkbox')[0].checked;
+    userSettings.settings.hmode_is_on = true;
+    userSettings.settings.hmode_reading_is_on = false;
+    LS.saveUSettings(userSettings);
+    Tools.reloadPage();
+  }
+
+  static turnOffHMode(){
+    let userSettings = LS.uSettings();
+    userSettings.settings.hmode_is_on = false;
+    userSettings.settings.hmode_reading_is_on = false;
+    LS.saveUSettings(userSettings);
+    Tools.reloadPage();
+  }
+
+  static turnOnReadingHMode(){
+    let userSettings = LS.uSettings();
+    userSettings.settings.hmode_is_on = false;
+    userSettings.settings.hmode_reading_is_on = true;
     LS.saveUSettings(userSettings);
     Tools.reloadPage();
   }

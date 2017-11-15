@@ -5,31 +5,38 @@
 //= require fragment-highlighter/libs/classes/Marker.js
 //= require fragment-highlighter/libs/classes/Tools.js
 //= require fragment-highlighter/libs/classes/UserSettings.js
+//= require fragment-highlighter/libs/classes/I18.js
 
 class FragmentHighlighter {
 
-  constructor(pages) {
-    FragmentHighlighter.init(pages);
+  constructor(options) {
+    FragmentHighlighter.init(options);
   }
 
-  static init(allowedPages) {
+  static init(options) {
     $(function(){
-      if (HView.isSupportedPage(allowedPages)) {
+      if (FragmentHighlighter.isEnabled(options)) {
         HView.renderModeButton();
-      }
 
-      HView.initHighlightWindow();
-      UserSettings.init();
+        HView.initHighlightWindow();
+        UserSettings.init();
 
-      if (HView.isHModeOn(allowedPages)) {
-        $(document.body).on('click', '.remove-text', function(e){
-          Marker.removeMarked(e.target);
-        });
+        if (UserSettings.isHMode()) {
+          $(document.body).on('click', '.remove-text', function(e){
+            Marker.removeMarked(e.target);
+          });
 
-        $(document.body).bind('mouseup', function(e){
-          Marker.extractFragment();
-        });
+          $(document.body).bind('mouseup', function(e){
+            Marker.extractFragment();
+          });
+        }
       }
     });
+  }
+
+  static isEnabled(options) {
+    let allowedMatcher = new RegExp("(" + options.allowedPages.join('|') + ")", "g");
+    let deniedMatcher = new RegExp("(" + options.deniedPages.join('|') + ")", "g");
+    return (allowedMatcher.test(window.location.href) && !deniedMatcher.test(window.location.href));
   }
 }
