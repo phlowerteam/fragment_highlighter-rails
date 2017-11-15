@@ -32,9 +32,12 @@ Or install it yourself as:
     //= require fragment-highlighter/fragment-highlighter.js
 
     $(function() {
-      let allowedPages = ['/articles/'];
-      new FragmentHighlighter(allowedPages);
+      let options = { allowedPages: ['/articles/'], deniedPages: ['/admin/'] };
+      new FragmentHighlighter(options);
     });
+## Video Presentation
+[![Watch the video](https://img.youtube.com/vi/sHj-CwYDRhU/0.jpg
+)](https://www.youtube.com/watch?v=sHj-CwYDRhU)
 
 ## Contributing
 
