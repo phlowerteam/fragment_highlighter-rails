@@ -9,6 +9,8 @@
 /spec/tmp
 /log
 /tmp/
+/vendor/assets/node_modules/
+/vendor/assets/public/
 
 # Ignore Byebug command history file.
 .byebug_history

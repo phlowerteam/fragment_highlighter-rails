@@ -25,7 +25,7 @@ class UserSettings {
         articles: {},
         articles_titles: {},
         settings:{
-          hmode_is_on: true,
+          hmode_is_on: false,
           hmode_reading_is_on: false
         }
       };
